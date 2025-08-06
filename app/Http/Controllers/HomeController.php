@@ -54,27 +54,50 @@ class HomeController extends Controller
      */
 
     // Pagina principal cuando se inicia sesión
-    public function index()
-    {
-        $empresas   = DatosEmpresa::orderBy('id_empresa','DESC')->limit('12')->get();
-        $municipios = vacante::select('lugar_vacante')->distinct()->get();
-        $vacantes   = \DB::SELECT("SELECT * FROM vacantes 
-                                INNER JOIN datos_empresas ON vacantes.id_empresa = datos_empresas.id_empresa 
-                                INNER JOIN fechas ON vacantes.id_vacante = fechas.id_vacante
-                                ORDER BY vacantes.created_at DESC LIMIT 10");
-        $requisitos = RequisitosVacante::All();
-        $info       = InformacionContacto::All();
-        $fechas     = Fecha::All();
-        $id         = auth()->id();
-        $recientes  = reciente::distinct('slug')
-                                ->where('id_usuario',$id)
-                                ->orderBy('created_at','DESC')
-                                ->limit('7')
-                                ->get();
-        $no_vacantes = \DB::table('vacantes')->where('is_covered', 0 )->count();
+   public function index()
+{
+    // ✅ Empresas con vacantes activas, sin duplicados, máximo 12
+    $empresas = DatosEmpresa::whereHas('vacantes', function ($query) {
+        $query->where('is_covered', 0); // Solo vacantes activas
+    })
+    ->with(['vacantes' => function ($query) {
+        $query->where('is_covered', 0); // Para contar en la vista
+    }])
+    ->get()
+    ->unique('id_empresa') // Asegura que no se repitan
+    ->values()
+    ->take(12); // Solo las primeras 12
 
-        return view('home', compact('empresas','municipios','vacantes','requisitos','info','fechas','recientes', 'no_vacantes'));
-    }
+    // Municipios únicos de vacantes
+    $municipios = Vacante::select('lugar_vacante')->distinct()->get();
+
+    // Vacantes más recientes (con sus fechas y empresa)
+    $vacantes = \DB::select("SELECT * FROM vacantes 
+                             INNER JOIN datos_empresas ON vacantes.id_empresa = datos_empresas.id_empresa 
+                             INNER JOIN fechas ON vacantes.id_vacante = fechas.id_vacante
+                             WHERE vacantes.is_covered = 0
+                             ORDER BY vacantes.created_at DESC
+                             LIMIT 10");
+
+    // Resto de los datos
+    $requisitos   = RequisitosVacante::all();
+    $info         = InformacionContacto::all();
+    $fechas       = Fecha::all();
+    $id           = auth()->id();
+    $recientes    = reciente::distinct('slug')
+                        ->where('id_usuario', $id)
+                        ->orderBy('created_at', 'DESC')
+                        ->limit(7)
+                        ->get();
+
+    $no_vacantes = \DB::table('vacantes')->where('is_covered', 0)->count();
+
+    return view('home', compact(
+        'empresas', 'municipios', 'vacantes',
+        'requisitos', 'info', 'fechas', 'recientes', 'no_vacantes'
+    ));
+}
+
     public function vacantesparati()
     {
         $empresas   = DatosEmpresa::orderBy('id_empresa','DESC')->limit('12')->get();
@@ -354,7 +377,7 @@ class HomeController extends Controller
         $datoc -> discapacidad      = $req -> discap;
         $datoc -> curp              = $req -> curp;
         $datoc -> ComSeEnt          = $req -> comoentero;
-        $datoc -> foto_perfil       = $img2;
+        $datoc -> foto_perfil       = $nombreImagen;
         $datoc -> id                = $id;
         $datoc -> save();
         
@@ -768,3 +791,4 @@ class HomeController extends Controller
     }
 
 }
+//

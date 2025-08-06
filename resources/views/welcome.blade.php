@@ -62,25 +62,28 @@
   }
 </style>
 
-<section>
-  <div style="position: relative;">
-    <img class="d-block w-100" src="{{ asset('assets/img/bg.jpg') }}" alt="First slide" style="object-fit: cover;">
+<section style="position: relative; margin-top: 0;">
+  <!-- Imagen de fondo con contenedor responsivo -->
+  <div class="hero-image-container" style="height: 400px; overflow: hidden;">
+    <img class="d-block w-100 h-100" src="{{ asset('assets/img/bg.jpg') }}" alt="Portal del Empleo Lerma" style="object-fit: cover;">
   </div>
   
-  <div class="form-container text-center animate__animated animate__fadeInDown"
+  <!-- Formulario con diseño responsivo -->
+  <div class="form-container text-center"
     style="position: absolute;
-           top: 50%;
-           left: 25%; 
-           transform: translateY(-50%); 
+           top: calc(43% + 30px); /* Ajuste para considerar la barra de navegación */
+           left: 50%; 
+           transform: translate(-50%, -50%); 
            background: rgba(255, 255, 255, 0.9);
            border: 3px solid #00a9e0;
            border-radius: 10px;
            padding: 10px;
-           max-width: 800px; 
-           width: 50%;
-           text-align: center;">
+           width: 90%;
+           max-width: 800px;
+           text-align: center;
+           box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);">
     
-    <h1 class="text-center custom-title" style="font-size: 40px;">Portal del Empleo Lerma</h1>
+    <h1 class="text-center custom-title" style="font-size: clamp(24px, 5vw, 40px); margin-bottom: 15px; color: #333; font-weight: 600;">Portal del Empleo Lerma</h1>
 
     <form action="{{ route('buscar') }}" class="row data-form form-search" method="GET">
       <div class="col-12 col-md-6">
@@ -116,13 +119,83 @@
 
       <div class="col-12 text-center mt-2">
         <button style="border: 2px solid #00a9e0; background-color: transparent; color: #00a9e0; border-radius: 15px !important; padding: 8px 15px;"
-          type="submit" class="btn btn-lg">
+          type="submit" class="btn btn-lg hover-effect">
           <i class="fa fa-search"></i> Buscar
         </button>
       </div>
     </form>
   </div>
 </section>
+
+<style>
+  /* Estilos generales */
+  ::placeholder {
+    color: #00a9e0;
+    opacity: 0.8;
+  }
+  
+  .hover-effect:hover {
+    background-color: #00a9e0 !important;
+    color: white !important;
+    transition: all 0.3s ease;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 992px) {
+    .hero-image-container {
+      height: 450px !important;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero-image-container {
+      height: 400px !important;
+    }
+    
+    .form-container {
+      top: calc(50% + 40px) !important;
+      padding: 15px !important;
+      width: 95% !important;
+    }
+    
+    .custom-title {
+      font-size: 28px !important;
+      margin-bottom: 10px !important;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .hero-image-container {
+      height: 350px !important;
+    }
+    
+    .form-container {
+      top: calc(50% + 50px) !important;
+      padding: 10px !important;
+    }
+    
+    .custom-title {
+      font-size: 24px !important;
+    }
+    
+    .input-group-text {
+      padding: 0.375rem 0.5rem !important;
+    }
+    
+    .btn-lg {
+      padding: 6px 12px !important;
+      font-size: 14px;
+    }
+    
+    /* Asegurar que el menú desplegable no afecte el espacio */
+    .navbar-collapse {
+      background-color: #00a9e0;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+    }
+  }
+</style>
 
 <div class="container my-5">
   <div class="row">
@@ -149,7 +222,18 @@
                      title="{{ $empresa->nombre_RS }}">
                 <div class="card-body bg-light">
                   <h6 class="card-title text-dark fw-semibold">{{ $empresa->nombre_RS }}</h6>
-                  <p class="card-text text-muted small">{{ $empresa->pagina_electronica }}</p>
+                  @if (!empty($empresa->pagina_electronica))
+                    <p class="card-text small mb-1">
+                      <a href="{{ Str::startsWith($empresa->pagina_electronica, ['http://', 'https://']) ? $empresa->pagina_electronica : 'https://' . $empresa->pagina_electronica }}" 
+                         class="text-decoration-underline text-primary" target="_blank" rel="noopener noreferrer">
+                        {{ $empresa->pagina_electronica }}
+                      </a>
+                    </p>
+                  @endif
+                  <p class="card-text text-muted small">
+                    {{ $empresa->calle }} {{ $empresa->numero }}, {{ $empresa->colonia }}<br>
+                    C.P. {{ $empresa->CP }}, {{ $empresa->municipio }}, {{ $empresa->estado }}
+                  </p>
                 </div>
               </div>
             </a>
@@ -161,6 +245,8 @@
     </div>
   </div>
 </div>
+
+
 
 <section class="events my-5">
   <div class="container">

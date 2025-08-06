@@ -168,6 +168,11 @@
                 </div>  
                 <div class="col text-center">
                 <a href="{{ route('descargarPDF') }}" id="downloadButton" class="btn btn-primary" style="border: 2px solid #e40046; border-radius: 15px !important; padding: 10px 20px; transition: 0.3s;" disabled>Descargar PDF</a>
+                 <a href="javascript:history.back()" class="back-button"
+                    style="border: 2px solid #fe5000; background-color: transparent; color: #fe5000; 
+                                          border-radius: 10px !important; padding: 10px 20px; transition: 0.3s; 
+                                          text-transform: uppercase;"><i class="fas fa-arrow-left"></i> Regresar</a>
+
 </div>
     </div>
 </div>

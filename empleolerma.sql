@@ -392,7 +392,6 @@ CREATE TABLE `password_resets` (
 /*Table structure for table `postulaciones` */
 
 DROP TABLE IF EXISTS `postulaciones`;
-
 CREATE TABLE `postulaciones` (
   `id_postulacion` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_usuario` bigint(20) unsigned NOT NULL,

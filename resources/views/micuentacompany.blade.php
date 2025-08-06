@@ -72,7 +72,7 @@
                         <dl class="row">
                           <dd class="col-sm-3">Nombre</dd>
                           <dt class="col-sm-9">{{$postulacion->nombre_completo}}
-                            @if($postulacion->was_contacted==1)
+                            @if(isset($postulacion->was_contacted) && $postulacion->was_contacted == 1)
                             <small class="float-right bg-info text-white px-2">contactado</small>
                           </dt>
                           @endif
@@ -419,7 +419,7 @@
                         <dl class="row">
                           <dd class="col-sm-3">Nombre</dd>
                           <dt class="col-sm-9">{{$postulacion->nombre_completo}}
-                            @if($postulacion->was_contacted==1)
+                            @if(isset($postulacion->was_contacted) && $postulacion->was_contacted == 1)
                             <small class="float-right bg-info text-white px-2">contactado</small>
                           </dt>
                           @endif

@@ -143,5 +143,15 @@ Route::POST('/contacto','MailController@store')->name('contacto');
 // Offline
 Route::get('/offline', function () {    
     return view('vendor/laravelpwa/offline');
+
+Route::get('/test-email', function() {
+    Mail::raw('Este es un correo de prueba desde Laravel', function($message) {
+        $message->to('jafetserrano21@gmail.com')
+                ->subject('Prueba de correo');
+    });
+    
+    return "Correo enviado, revisa tu bandeja de entrada";
+});
+
 });
 

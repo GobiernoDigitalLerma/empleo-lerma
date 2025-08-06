@@ -41,7 +41,7 @@ class ActiveAccount extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->from('contacto@lerma.gob.mx', 'Empleo Lerma')
+            ->from('empleo.lerma@gmail.com', 'Empleo Lerma')
             ->subject('Tu cuenta se ha activado!!')
             ->greeting('Hola ' . $notifiable->nombre)
             ->line('Tus datos han sido verificados por Empleo Lerma, ahora puedes publicar vacantes.')

@@ -30,7 +30,7 @@ class NuevaNotificacion extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from('contacto@lerma.gob.mx', 'Empleo Lerma')
+                    ->from('empleo.lerma@gmail.com', 'Empleo Lerma')
                     ->subject('Una empresa ha registrado sus datos: ' . $this->empresa->nombre_RS)
                     ->greeting('Hola Empleo Lerma!!!')
                     ->line('Se ha registrado una nueva empresa en la aplicación Empleo Lerma.')

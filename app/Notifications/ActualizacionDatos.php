@@ -30,7 +30,7 @@ class ActualizacionDatos extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->from('contacto@lerma.gob.mx', 'Empleo Lerma')
+                    ->from('empleo.lerma@gmail.com', 'Empleo Lerma')
                     ->subject('Una Empresa ha Actualizado sus Datos: ' . $this->empresa->nombre_RS)
                     ->greeting('Hola Empleo Lerma!!!')
                     ->line('Se han actualizado de datos de una empresa en la aplicación Empleo Lerma.')

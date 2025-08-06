@@ -18,7 +18,13 @@
                     <p class="card-text text-muted">{{ $evento->descripcion }}</p>
                     <p class="card-text"><strong>📍 Ubicación:</strong> {{ $evento->ubicacion }}</p>
                     <p class="card-text"><small class="text-muted">📅 {{ $evento->fecha }}</small></p>
+                   <div class="mt-3">
+                    <a href="javascript:history.back()" class="back-button"
+                    style="border: 2px solid #fe5000; background-color: transparent; color: #fe5000; 
+                                          border-radius: 10px !important; padding: 10px 20px; transition: 0.3s; 
+                                          text-transform: uppercase;"><i class="fas fa-arrow-left"></i> Regresar</a>
 
+                    </div>
                     {{-- Botón de registro si hay un enlace --}}
                     @if($evento->link)
                         <div class="mt-3">

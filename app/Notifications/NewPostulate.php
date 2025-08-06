@@ -48,7 +48,7 @@ class NewPostulate extends Notification
             $msj = 'Se registro tu postulación';
         }
         return (new MailMessage)
-            ->from('contacto@lerma.gob.mx', 'Empleo Lerma')
+            ->from('empleo.lerma@gmail.com', 'Empleo Lerma')
             ->subject($title)
             ->greeting('Hola ' . $notifiable->nombre)
             ->line($msj . ' a la vacante ' . $this->vacancy->titulo_puesto . ' de Empleo Lerma.')

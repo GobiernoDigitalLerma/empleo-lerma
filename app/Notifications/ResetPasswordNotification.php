@@ -57,7 +57,7 @@ class ResetPasswordNotification extends Notification
         }
 
         return (new MailMessage)
-            ->from('contacto@lerma.gob.mx','Empleo Lerma')
+            ->from('empleo.lerma@gmail.com','Empleo Lerma')
             ->subject(Lang::getFromJson('Notificación de restablecimiento de contraseña'))
             ->greeting('Hola '. $notifiable->nombre)
             ->line(Lang::getFromJson('Está recibiendo este correo electrónico porque hemos recibido una solicitud de restablecimiento de contraseña para su cuenta.'))

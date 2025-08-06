@@ -64,7 +64,7 @@ if (!$informacion) {
 }
 
 return (new MailMessage)
-->from('contacto@lerma.gob.mx', 'Empleo Lerma')
+->from('empleo.lerma@gmail.com', 'Empleo Lerma')
 ->subject('¡Una nueva vacante se ha registrado!')
 ->greeting('Hola Administrador')
 ->line('La vacante **' . $this->vacancy->titulo_puesto . '** se ha registrado en la aplicación *Empleo Lerma*.')

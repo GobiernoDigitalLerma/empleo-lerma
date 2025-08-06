@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'contacto@lerma.gob.mx'),
+        'address' => env('MAIL_FROM_ADDRESS', 'empleo.lerma@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Empleo Lerma'),
     ],
 
@@ -130,6 +130,14 @@ return [
     |
     */
 
-    'log_channel' => env('MAIL_LOG_CHANNEL'),
+  /*  'log_channel' => env('MAIL_LOG_CHANNEL'),
+
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+        ],
+    ],*/
 
 ];

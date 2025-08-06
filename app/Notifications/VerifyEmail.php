@@ -44,7 +44,7 @@ class VerifyEmail extends Notification
         }
 
         return (new MailMessage)
-            ->from('contacto@lerma.gob.mx','Empleo Lerma')
+            ->from('empleo.lerma@gmail.com','Empleo Lerma')
             ->subject(Lang::getFromJson('Verificación por correo electrónico'))
             ->greeting('Hola '. $notifiable->nombre)
             ->line(Lang::getFromJson('Por favor, haz clic en el botón de abajo para verificar tu dirección de correo electrónico.'))
