@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,93 +9,82 @@
  */
 namespace PHPUnit\Framework;
 
+use function assert;
+use function count;
 use RecursiveIterator;
 
 /**
- * Iterator for test suites.
+ * @template-implements RecursiveIterator<non-negative-int, Test>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestSuiteIterator implements RecursiveIterator
 {
     /**
-     * @var int
+     * @var list<Test>
      */
-    private $position = 0;
+    private readonly array $tests;
 
     /**
-     * @var Test[]
+     * @var non-negative-int
      */
-    private $tests;
+    private int $position = 0;
 
     public function __construct(TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();
     }
 
-    /**
-     * Rewinds the Iterator to the first element.
-     */
     public function rewind(): void
     {
         $this->position = 0;
     }
 
-    /**
-     * Checks if there is a current element after calls to rewind() or next().
-     */
     public function valid(): bool
     {
-        return $this->position < \count($this->tests);
+        return $this->position < count($this->tests);
     }
 
     /**
-     * Returns the key of the current element.
+     * @return non-negative-int
      */
     public function key(): int
     {
         return $this->position;
     }
 
-    /**
-     * Returns the current element.
-     */
-    public function current(): ?Test
+    public function current(): Test
     {
-        return $this->valid() ? $this->tests[$this->position] : null;
+        return $this->tests[$this->position];
     }
 
-    /**
-     * Moves forward to next element.
-     */
     public function next(): void
     {
         $this->position++;
     }
 
     /**
-     * Returns the sub iterator for the current element.
-     *
-     * @throws \UnexpectedValueException if the current element is no TestSuite
+     * @throws NoChildTestSuiteException
      */
     public function getChildren(): self
     {
         if (!$this->hasChildren()) {
-            throw new UnexpectedValueException(
-                'The current item is no TestSuite instance and hence cannot have any children.',
-                1567849414
+            throw new NoChildTestSuiteException(
+                'The current item is not a TestSuite instance and therefore does not have any children.',
             );
         }
 
-        /** @var TestSuite $current */
         $current = $this->current();
+
+        assert($current instanceof TestSuite);
 
         return new self($current);
     }
 
-    /**
-     * Checks whether the current element has children.
-     */
     public function hasChildren(): bool
     {
-        return $this->current() instanceof TestSuite;
+        return $this->valid() && $this->current() instanceof TestSuite;
     }
 }

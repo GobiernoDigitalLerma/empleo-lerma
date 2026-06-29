@@ -2,19 +2,21 @@
 
 namespace Illuminate\Events;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Queue\Job;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 
 class CallQueuedListener implements ShouldQueue
 {
-    use InteractsWithQueue;
+    use InteractsWithQueue, Queueable;
 
     /**
      * The listener class name.
      *
-     * @var string
+     * @var class-string
      */
     public $class;
 
@@ -40,11 +42,25 @@ class CallQueuedListener implements ShouldQueue
     public $tries;
 
     /**
+     * The maximum number of exceptions allowed, regardless of attempts.
+     *
+     * @var int
+     */
+    public $maxExceptions;
+
+    /**
+     * The number of seconds to wait before retrying a job that encountered an uncaught exception.
+     *
+     * @var int
+     */
+    public $backoff;
+
+    /**
      * The timestamp indicating when the job should timeout.
      *
      * @var int
      */
-    public $timeoutAt;
+    public $retryUntil;
 
     /**
      * The number of seconds the job can run before timing out.
@@ -54,12 +70,45 @@ class CallQueuedListener implements ShouldQueue
     public $timeout;
 
     /**
+     * Indicates if the job should fail if the timeout is exceeded.
+     *
+     * @var bool
+     */
+    public $failOnTimeout = false;
+
+    /**
+     * Indicates if the job should be encrypted.
+     *
+     * @var bool
+     */
+    public $shouldBeEncrypted = false;
+
+    /**
+     * Indicates if the listener should be unique.
+     */
+    public bool $shouldBeUnique = false;
+
+    /**
+     * Indicates if the listener should be unique until processing begins.
+     */
+    public bool $shouldBeUniqueUntilProcessing = false;
+
+    /**
+     * The unique ID of the listener.
+     */
+    public mixed $uniqueId = null;
+
+    /**
+     * The number of seconds the unique lock should be maintained.
+     */
+    public ?int $uniqueFor = null;
+
+    /**
      * Create a new job instance.
      *
-     * @param  string  $class
+     * @param  class-string  $class
      * @param  string  $method
      * @param  array  $data
-     * @return void
      */
     public function __construct($class, $method, $data)
     {
@@ -82,17 +131,63 @@ class CallQueuedListener implements ShouldQueue
             $this->job, $container->make($this->class)
         );
 
-        call_user_func_array(
-            [$handler, $this->method], $this->data
-        );
+        $handler->{$this->method}(...array_values($this->data));
+    }
+
+    /**
+     * Determine if the listener should be unique.
+     */
+    public function shouldBeUnique(): bool
+    {
+        return $this->shouldBeUnique;
+    }
+
+    /**
+     * Determine if the listener should be unique until processing begins.
+     */
+    public function shouldBeUniqueUntilProcessing(): bool
+    {
+        return $this->shouldBeUniqueUntilProcessing;
+    }
+
+    /**
+     * Get the unique ID for the listener.
+     */
+    public function uniqueId(): mixed
+    {
+        return $this->uniqueId;
+    }
+
+    /**
+     * Get the number of seconds the unique lock should be maintained.
+     */
+    public function uniqueFor(): ?int
+    {
+        return $this->uniqueFor;
+    }
+
+    /**
+     * Get the cache store used to manage unique locks.
+     */
+    public function uniqueVia(): ?Cache
+    {
+        $listener = Container::getInstance()->make($this->class);
+
+        if (! method_exists($listener, 'uniqueVia')) {
+            return null;
+        }
+
+        $this->prepareData();
+
+        return $listener->uniqueVia(...array_values($this->data));
     }
 
     /**
      * Set the job instance of the given class if necessary.
      *
      * @param  \Illuminate\Contracts\Queue\Job  $job
-     * @param  mixed  $instance
-     * @return mixed
+     * @param  object  $instance
+     * @return object
      */
     protected function setJobInstanceIfNecessary(Job $job, $instance)
     {
@@ -108,7 +203,7 @@ class CallQueuedListener implements ShouldQueue
      *
      * The event instance and the exception will be passed.
      *
-     * @param  \Exception  $e
+     * @param  \Throwable  $e
      * @return void
      */
     public function failed($e)
@@ -117,10 +212,10 @@ class CallQueuedListener implements ShouldQueue
 
         $handler = Container::getInstance()->make($this->class);
 
-        $parameters = array_merge($this->data, [$e]);
+        $parameters = array_merge(array_values($this->data), [$e]);
 
         if (method_exists($handler, 'failed')) {
-            call_user_func_array([$handler, 'failed'], $parameters);
+            $handler->failed(...$parameters);
         }
     }
 

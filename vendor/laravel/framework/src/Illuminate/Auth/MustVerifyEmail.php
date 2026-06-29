@@ -2,6 +2,8 @@
 
 namespace Illuminate\Auth;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
+
 trait MustVerifyEmail
 {
     /**
@@ -15,7 +17,7 @@ trait MustVerifyEmail
     }
 
     /**
-     * Mark the given user's email as verified.
+     * Mark the user's email as verified.
      *
      * @return bool
      */
@@ -27,12 +29,34 @@ trait MustVerifyEmail
     }
 
     /**
+     * Mark the user's email as unverified.
+     *
+     * @return bool
+     */
+    public function markEmailAsUnverified()
+    {
+        return $this->forceFill([
+            'email_verified_at' => null,
+        ])->save();
+    }
+
+    /**
      * Send the email verification notification.
      *
      * @return void
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new Notifications\VerifyEmail);
+        $this->notify(new VerifyEmail);
+    }
+
+    /**
+     * Get the email address that should be used for verification.
+     *
+     * @return string
+     */
+    public function getEmailForVerification()
+    {
+        return $this->email;
     }
 }

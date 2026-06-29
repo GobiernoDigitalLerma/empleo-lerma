@@ -2,28 +2,28 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
 
+/**
+ * Punto central para registrar servicios globales de la aplicación.
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
-     *
-     * @return void
+     * Registra bindings o singletons compartidos por la aplicación.
      */
-    public function register()
+    public function register(): void
     {
         //
     }
 
     /**
-     * Bootstrap any application services.
-     *
-     * @return void
+     * Ejecuta configuración global después de que Laravel inicia servicios.
      */
-    public function boot()
+    public function boot(): void
     {
-        Schema::defaultStringLength(191);
+        // La aplicación usa Bootstrap 5; esto evita paginadores con markup de Tailwind.
+        Paginator::useBootstrapFive();
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-class Controller extends BaseController
+/**
+ * Controlador base de la aplicación.
+ *
+ * Los controladores concretos heredan de aquí para mantener un punto común si
+ * después se agregan helpers o middleware globales de controladores.
+ */
+abstract class Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    //
 }

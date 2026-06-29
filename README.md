@@ -1,72 +1,175 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Empleo Lerma 2.0
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Empleo Lerma 2.0 es la versión actualizada de la aplicación municipal de empleo de Lerma. Está construida en Laravel 12 con Blade, Bootstrap 5, MySQL, colas con driver `database` y notificaciones por correo.
 
-## About Laravel
+Esta versión reemplaza funcionalmente al proyecto legacy `empleo-lerma`, pero no modifica el código anterior ni migra datos legacy.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Ejecución Con Docker En Desarrollo
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Usa esta opción cuando quieres levantar todo el ambiente local con contenedores: Laravel, MySQL, Vite, queue, scheduler y Mailpit.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+cp .env.example .env
+docker compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.dev.yml exec app composer install
+docker compose -f docker-compose.dev.yml exec node npm install
+docker compose -f docker-compose.dev.yml exec app php artisan key:generate
+docker compose -f docker-compose.dev.yml exec app php artisan migrate:fresh --seed
+```
 
-## Learning Laravel
+URLs de desarrollo:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Aplicación: http://localhost:8080
+- Vite: http://localhost:5173
+- Mailpit: http://localhost:8025
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Comandos útiles:
 
-## Laravel Sponsors
+```bash
+docker compose -f docker-compose.dev.yml ps
+docker compose -f docker-compose.dev.yml logs -f queue
+docker compose -f docker-compose.dev.yml exec app php artisan queue:failed
+docker compose -f docker-compose.dev.yml exec app php artisan queue:restart
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Ejecución Local Sin Docker
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+Usa esta opción si ya tienes instalado PHP, Composer, MySQL, Node.js y npm en tu equipo.
 
-## Contributing
+Requisitos:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- PHP 8.3
+- Composer 2
+- MySQL 8
+- Node.js 20 LTS
+- npm
 
-## Security Vulnerabilities
+Instalación:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+composer install
+npm install
+php artisan key:generate
+php artisan migrate:fresh --seed
+```
 
-## License
+Procesos de desarrollo:
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve
+```
+
+```bash
+npm run dev
+```
+
+```bash
+php artisan queue:work database --queue=default --tries=3 --timeout=90 --sleep=2
+```
+
+Opcional para scheduler:
+
+```bash
+php artisan schedule:work
+```
+
+En local puedes usar Mailpit si lo tienes instalado o configurar Gmail SMTP en `.env`.
+
+## Ejecución Con Docker En Producción
+
+Producción no usa Mailpit ni Vite dev server. El build genera assets con Vite dentro de la imagen y ejecuta Laravel con PHP-FPM, Nginx, MySQL, queue y scheduler.
+
+Prepara variables:
+
+```bash
+cp .env.production.example .env
+```
+
+Configura al menos:
+
+- `APP_KEY`
+- `APP_URL`
+- `DB_PASSWORD`
+- `DB_ROOT_PASSWORD`
+- `MAIL_HOST=smtp.gmail.com`
+- `MAIL_PORT=587`
+- `MAIL_USERNAME`
+- `MAIL_PASSWORD`
+- `MAIL_ENCRYPTION=tls`
+- `MAIL_FROM_ADDRESS`
+
+Levanta producción:
+
+```bash
+docker compose up -d --build
+docker compose exec app php artisan migrate --force
+docker compose exec app php artisan db:seed --class=AdminSeeder --force
+docker compose exec app php artisan db:seed --class=CatalogSeeder --force
+```
+
+Verifica servicios:
+
+```bash
+docker compose ps
+docker compose logs -f queue
+docker compose exec app php artisan queue:monitor database:100
+docker compose exec app php artisan queue:failed
+```
+
+Después de un deploy o cambio de código:
+
+```bash
+docker compose exec app php artisan optimize:clear
+docker compose exec app php artisan optimize
+docker compose exec app php artisan queue:restart
+docker compose restart queue scheduler
+```
+
+## Usuario Inicial
+
+El administrador de producción se crea con:
+
+```bash
+docker compose exec app php artisan db:seed --class=AdminSeeder --force
+```
+
+Antes de ejecutarlo configura estas variables en `.env`:
+
+- `ADMIN_NAME`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+
+En producción `ADMIN_EMAIL` y `ADMIN_PASSWORD` son obligatorios. Si faltan, el seeder se detiene para evitar una cuenta insegura.
+
+## Catálogos Iniciales
+
+Los catálogos base de producción se crean con:
+
+```bash
+docker compose exec app php artisan db:seed --class=CatalogSeeder --force
+```
+
+Este comando carga valores iniciales para escolaridad, tipos de empleo, municipios, estados, idiomas, estados de empresa, estados de vacante, estados de postulación y fuentes de origen.
+
+Para desarrollo puedes usar:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+Ese flujo sí carga datos demo para validar pantallas públicas y dashboards. No lo uses en producción si no quieres datos de prueba.
+
+## Validación
+
+```bash
+php artisan test
+npm run build
+```
+
+Con Docker de desarrollo:
+
+```bash
+docker compose -f docker-compose.dev.yml exec app php artisan test
+docker compose -f docker-compose.dev.yml exec node npm run build
+```

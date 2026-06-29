@@ -40,9 +40,12 @@ return [
     'second' => ':count Sekunde|:count Sekunden',
     'a_second' => 'ein paar Sekunden|:count Sekunden',
     's' => ':count Sek.',
-    'millisecond' => ':count Millisekunde|:count Millisekunde',
-    'a_millisecond' => 'eine Millisekunde|:count Millisekunde',
+    'millisecond' => ':count Millisekunde|:count Millisekunden',
+    'a_millisecond' => 'eine Millisekunde|:count Millisekunden',
     'ms' => ':countms',
+    'microsecond' => ':count Mikrosekunde|:count Mikrosekunden',
+    'a_microsecond' => 'eine Mikrosekunde|:count Mikrosekunden',
+    'µs' => ':countµs',
     'ago' => 'vor :time',
     'from_now' => 'in :time',
     'after' => ':time später',
@@ -75,6 +78,24 @@ return [
     'diff_before_yesterday' => 'Vorgestern',
     'diff_after_tomorrow' => 'Übermorgen',
 
+    'period_recurrences' => 'einmal|:count mal',
+    'period_interval' => static function (string $interval = '') {
+        /** @var string $output */
+        $output = preg_replace('/^(ein|eine|1)\s+/u', '', $interval);
+
+        if (preg_match('/^(ein|1)( Monat| Mon.| Tag| Tg.)/u', $interval)) {
+            return "jeden $output";
+        }
+
+        if (preg_match('/^(ein|1)( Jahr| J.)/u', $interval)) {
+            return "jedes $output";
+        }
+
+        return "jede $output";
+    },
+    'period_start_date' => 'von :date',
+    'period_end_date' => 'bis :date',
+
     'formats' => [
         'LT' => 'HH:mm',
         'LTS' => 'HH:mm:ss',
@@ -102,4 +123,13 @@ return [
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 4,
     'list' => [', ', ' und '],
+    'ordinal_words' => [
+        'of' => 'im',
+        'first' => 'erster',
+        'second' => 'zweiter',
+        'third' => 'dritter',
+        'fourth' => 'vierten',
+        'fifth' => 'fünfter',
+        'last' => 'letzten',
+    ],
 ];

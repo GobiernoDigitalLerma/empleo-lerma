@@ -1,0 +1,1663 @@
+@import 'tokens';
+
+// Bootstrap selectivo: evita cargar componentes no usados como modal, tooltip,
+// carousel, accordion o spinners y reduce el CSS final de la aplicación.
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+
+// Utilities Bootstrap recortadas: conservamos las familias usadas en Blade y
+// eliminamos generadores grandes que no aparecen en la interfaz actual.
+$utilities: map-remove(
+  $utilities,
+  'align',
+  'float',
+  'object-fit',
+  'opacity',
+  'overflow',
+  'overflow-x',
+  'overflow-y',
+  'focus-ring',
+  'position',
+  'top',
+  'bottom',
+  'start',
+  'end',
+  'translate-middle',
+  'border-top',
+  'border-end',
+  'border-start',
+  'border-color',
+  'subtle-border-color',
+  'border-width',
+  'border-opacity',
+  'max-width',
+  'viewport-width',
+  'min-viewport-width',
+  'max-height',
+  'viewport-height',
+  'min-viewport-height',
+  'align-content',
+  'order',
+  'negative-margin',
+  'negative-margin-x',
+  'negative-margin-y',
+  'negative-margin-top',
+  'negative-margin-end',
+  'negative-margin-bottom',
+  'negative-margin-start',
+  'row-gap',
+  'column-gap',
+  'font-family',
+  'font-style',
+  'line-height',
+  'text-opacity',
+  'link-opacity',
+  'link-underline-opacity',
+  'bg-opacity',
+  'subtle-background-color',
+  'gradient',
+  'user-select',
+  'pointer-events',
+  'rounded-top',
+  'rounded-end',
+  'rounded-bottom',
+  'rounded-start',
+  'visibility',
+  'z-index'
+);
+
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+@import 'bootstrap/scss/forms';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/transitions';
+@import 'bootstrap/scss/nav';
+@import 'bootstrap/scss/navbar';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/pagination';
+@import 'bootstrap/scss/badge';
+@import 'bootstrap/scss/alert';
+@import 'bootstrap/scss/list-group';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/offcanvas';
+@import 'bootstrap/scss/helpers';
+@import 'bootstrap/scss/utilities/api';
+
+body {
+  background: $lerma-surface;
+  font-family: $font-family-sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+  font-weight: 300;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+// Contenedor principal del sitio: coincide con el ancho máximo solicitado.
+.container {
+  max-width: 1120px;
+}
+
+h1,
+.h1 {
+  color: $lerma-ink;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+h1[class*='display-'],
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6 {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+h2,
+.h2 {
+  color: $lerma-ink;
+  font-size: 22.5px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h3,
+.h3 {
+  color: $lerma-ink;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h4,
+.h4 {
+  color: $lerma-ink;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+h5,
+.h5 {
+  color: $lerma-ink;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+h6,
+.h6 {
+  color: $lerma-ink;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+p,
+li,
+.form-label {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+a,
+.nav-link {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.lead,
+.card-text,
+.text-muted,
+.list-group-item {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.fw-bold,
+.fw-semibold,
+strong,
+b {
+  font-weight: 700 !important;
+}
+
+.official-strip {
+  background: $lerma-gray;
+  color: rgba(#fff, .94);
+  font-size: 12px;
+  font-weight: 300;
+  padding: .45rem 0;
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem 1rem;
+    justify-content: space-between;
+  }
+
+  a {
+    color: #fff;
+    font-size: 12px;
+    text-decoration: none;
+  }
+}
+
+// Cabecera pública en dos niveles: identidad fija arriba y menú operativo abajo.
+.public-header {
+  background: $body-bg;
+  border-bottom: 1px solid rgba($lerma-gray, .12);
+}
+
+.public-identity-bar {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  min-height: 60px;
+}
+
+.public-navbar__brand {
+  align-items: center;
+  color: $lerma-ink;
+  display: flex;
+  gap: .85rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  img {
+    height: 42px;
+    width: auto;
+  }
+
+  span {
+    border-left: 1px solid rgba($lerma-gray, .22);
+    color: $lerma-gray;
+    line-height: 1;
+    padding-left: .85rem;
+    font-size: 1.25rem;
+  }
+}
+
+.public-account-actions {
+  align-items: stretch;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.public-account-link {
+  align-items: center;
+  border-left: 1px solid rgba($lerma-gray, .18);
+  color: $lerma-ink;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 400;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  text-decoration: none;
+
+  &:last-child {
+    border-right: 1px solid rgba($lerma-gray, .18);
+  }
+
+  &:hover,
+  &:focus {
+    color: $lerma-blue;
+  }
+}
+
+.public-menu-bar {
+  background: $lerma-green-official;
+  min-height: 60px;
+  padding: 0;
+}
+
+.public-menu {
+  align-items: stretch;
+
+  .nav-item {
+    border-left: 1px solid rgba(#fff, .22);
+  }
+
+  .nav-item:last-child {
+    border-right: 1px solid rgba(#fff, .22);
+  }
+
+  .nav-link {
+    align-items: center;
+    color: #fff;
+    display: flex;
+    font-size: 14px;
+    font-weight: 400;
+    justify-content: center;
+    min-height: 60px;
+    min-width: 132px;
+    padding: 0 1.15rem;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+
+    &::after {
+      background: #fff;
+      bottom: 0;
+      content: '';
+      height: 4px;
+      left: 0;
+      opacity: 0;
+      position: absolute;
+      right: 0;
+      transform: scaleX(.55);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    &:hover,
+    &:focus,
+    &.active {
+      background: rgba(#fff, .09);
+      color: #fff;
+    }
+
+    &:hover::after,
+    &:focus::after,
+    &.active::after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+}
+
+.public-menu-toggler {
+  align-items: center;
+  border: 1px solid rgba(#fff, .45);
+  border-radius: .25rem;
+  color: #fff;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 400;
+  margin: .7rem 0;
+  padding: .45rem .95rem;
+
+  &:focus {
+    box-shadow: 0 0 0 .2rem rgba(#fff, .22);
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .public-menu {
+    padding: .35rem 0 .8rem;
+
+    .nav-item,
+    .nav-item:last-child {
+      border: 0;
+    }
+
+    .nav-link {
+      border-radius: .25rem;
+      justify-content: flex-start;
+      min-height: 46px;
+      min-width: 0;
+      padding: .65rem .8rem;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .public-identity-bar {
+    min-height: 68px;
+  }
+
+  .public-navbar__brand {
+    gap: .6rem;
+
+    img {
+      height: 34px;
+    }
+
+    span {
+      font-size: 14px;
+      padding-left: .6rem;
+    }
+  }
+
+  .public-account-link {
+    font-size: 14px;
+    padding: 0 .65rem;
+  }
+}
+
+.section-title {
+  color: $lerma-ink;
+  font-weight: 700;
+}
+
+.card,
+.table,
+.form-control,
+.form-select {
+  border-color: $lerma-border;
+}
+
+.card {
+  background: #fff;
+  border: 0;
+  border-radius: .5rem;
+  box-shadow: none !important;
+  transition: box-shadow .18s ease, transform .18s ease;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: $lerma-shadow !important;
+  }
+}
+
+.shadow-sm {
+  box-shadow: none !important;
+}
+
+.btn {
+  align-items: center;
+  border-radius: .75rem;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: .45rem;
+  justify-content: center;
+  letter-spacing: 0;
+  padding: .72rem 1.15rem;
+}
+
+.btn-sm {
+  padding: .48rem .85rem;
+}
+
+.btn-primary {
+  background: $lerma-blue;
+  border-color: $lerma-blue;
+  color: $body-bg;
+
+  &:hover,
+  &:focus {
+    background: darken($lerma-blue, 7%);
+    border-color: darken($lerma-blue, 7%);
+    color: $body-bg;
+  }
+}
+
+.btn-warning {
+  background: $lerma-orange;
+  border-color: $lerma-orange;
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    background: $lerma-orange-strong;
+    border-color: $lerma-orange-strong;
+    color: #fff;
+  }
+}
+
+.form-control,
+.form-select,
+.input-group-text {
+  border-radius: .75rem;
+  min-height: 48px;
+}
+
+// Íconos internos SVG: sustituyen fuentes externas y mantienen carga ligera.
+.ui-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  height: 1rem;
+  vertical-align: -.15em;
+  width: 1rem;
+}
+
+.button-icon,
+.form-field-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  height: 1rem;
+  width: 1rem;
+}
+
+.search-field {
+  .input-group-text {
+    background: #fff;
+    border-right: 0;
+    color: $lerma-blue;
+    padding-left: .9rem;
+    padding-right: .55rem;
+  }
+
+  .form-control,
+  .form-select {
+    border-left: 0;
+  }
+
+  &:focus-within {
+    .input-group-text {
+      border-color: $lerma-blue;
+      color: $lerma-orange;
+    }
+  }
+}
+
+// Dashboard: estructura base para escritorio y móvil.
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-sidebar {
+  background: $lerma-paper;
+  border-right: 1px solid $lerma-border;
+  flex: 0 0 292px;
+  min-height: 100vh;
+  padding: 1.5rem;
+  position: sticky;
+  top: 0;
+  width: 292px;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+}
+
+@include media-breakpoint-up(lg) {
+  .dashboard-content {
+    min-height: 100vh;
+  }
+}
+
+.dashboard-topbar {
+  align-items: center;
+  background: rgba(#fff, .96);
+  border-bottom: 1px solid $lerma-border;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  min-height: 76px;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.dashboard-accountbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: flex-end;
+}
+
+.dashboard-account-summary {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem .75rem;
+  justify-content: flex-end;
+
+  strong {
+    color: $lerma-ink;
+    font-weight: 700;
+  }
+
+  span:not(.badge) {
+    color: $lerma-muted;
+    font-size: 14px;
+    font-weight: 300;
+  }
+}
+
+.dashboard-main-area {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+.dashboard-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-mobilebar {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dashboard-mobilebrand {
+  align-items: center;
+  color: $lerma-gray;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: .55rem;
+  text-decoration: none;
+
+  img {
+    height: 32px;
+    width: auto;
+  }
+
+  span {
+    color: $lerma-ink;
+    font-weight: 700;
+  }
+}
+
+// Componente reusable del menú autenticado.
+.dashboard-nav-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: calc(100vh - 3rem);
+  width: 100%;
+}
+
+.dashboard-brand {
+  align-items: center;
+  color: $lerma-ink;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+  min-height: 132px;
+  text-decoration: none;
+
+  strong {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  img {
+    height: auto;
+    max-height: 58px;
+    max-width: 170px;
+    width: auto;
+  }
+
+  small {
+    color: $lerma-muted;
+    display: block;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1;
+    text-align: center;
+  }
+}
+
+.dashboard-menu {
+  display: grid;
+  gap: .35rem;
+}
+
+.dashboard-menu-link {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: $border-radius;
+  color: $lerma-gray;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: .75rem;
+  min-height: 48px;
+  padding: 0 .9rem;
+  text-align: left;
+  text-decoration: none;
+  transition: background-color .16s ease, color .16s ease, transform .16s ease;
+  width: 100%;
+
+  .dashboard-menu-icon {
+    color: $lerma-blue;
+    height: 1.05rem;
+    width: 1.05rem;
+  }
+
+  &:hover,
+  &.active {
+    background: rgba($lerma-orange, .12);
+    color: $lerma-ink;
+    transform: translateX(2px);
+
+    .dashboard-menu-icon {
+      color: $lerma-orange;
+    }
+  }
+
+}
+
+.dashboard-menu-button {
+  .button-icon {
+    height: 1.05rem;
+    width: 1.05rem;
+  }
+}
+
+.dashboard-offcanvas {
+  .dashboard-nav-shell {
+    min-height: auto;
+  }
+
+  .offcanvas-body {
+    padding-top: 0;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .dashboard-layout {
+    display: block;
+  }
+
+  .dashboard-topbar {
+    align-items: stretch;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: auto;
+    padding: .85rem 1rem;
+  }
+
+  .dashboard-accountbar {
+    align-items: center;
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: 1fr auto auto;
+    justify-content: space-between;
+  }
+
+  .dashboard-account-summary {
+    justify-content: flex-start;
+    min-width: 0;
+
+    strong {
+      max-width: 10rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .dashboard-main-area {
+    padding: 1.5rem 1rem;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .dashboard-accountbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-account-summary {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-accountbar .btn,
+  .dashboard-accountbar form,
+  .dashboard-accountbar button {
+    width: 100%;
+  }
+}
+
+// Pantallas puente para módulos pendientes.
+.dashboard-section-card {
+  .card {
+    border-radius: .5rem;
+  }
+}
+
+// Paginación compacta para catálogos: evita que números largos rompan el panel.
+.catalog-pagination {
+  align-items: center;
+  border-top: 1px solid $lerma-border;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: space-between;
+  padding: 1rem;
+
+  p {
+    color: $lerma-muted;
+    margin: 0;
+  }
+}
+
+.catalog-pagination__controls {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.catalog-pagination__current {
+  color: $lerma-gray;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.dashboard-checklist {
+  display: grid;
+  gap: .5rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.dashboard-help-panel {
+  background: #fff;
+  border: 1px solid $lerma-border;
+  border-radius: $border-radius-lg;
+  padding: 1.25rem;
+}
+
+.event-admin-preview {
+  aspect-ratio: 16 / 9;
+  border: 1px solid $lerma-border;
+  border-radius: $border-radius;
+  max-width: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+
+// Logo de empresa en detalle interno de vacante: evita deformaciones y rutas vacías.
+.company-logo-thumb {
+  align-items: center;
+  background: $lerma-soft-gray;
+  border: 1px solid $lerma-border;
+  border-radius: 50%;
+  display: inline-flex;
+  height: 72px;
+  justify-content: center;
+  overflow: hidden;
+  width: 72px;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  span {
+    color: $lerma-orange;
+    font-size: 22px;
+    font-weight: 700;
+  }
+}
+
+// Dashboard ciudadano: logo compacto dentro de tarjetas de vacantes recomendadas.
+.citizen-vacancy-card__logo {
+  border: 1px solid $lerma-border;
+  border-radius: 50%;
+  flex: 0 0 48px;
+  height: 48px;
+  object-fit: cover;
+  width: 48px;
+}
+
+.citizen-vacancy-card__logo--placeholder {
+  align-items: center;
+  background: $lerma-soft-gray;
+  color: $lerma-orange;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+}
+
+// Bandeja de notificaciones: mensajes legibles con acciones de lectura.
+.notification-item {
+  background: #fff;
+}
+
+.notification-item--unread {
+  background: rgba($lerma-blue, .06);
+  border-left: 4px solid $lerma-blue;
+}
+
+.notification-item__body {
+  min-width: 0;
+}
+
+.notification-item__actions {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  justify-content: flex-end;
+}
+
+.public-eyebrow {
+  color: $lerma-orange;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.public-simple-hero {
+  background: linear-gradient(180deg, #fff, $lerma-surface);
+}
+
+// Páginas públicas informativas copiadas funcionalmente desde el legacy.
+.public-flow-page {
+  background: $lerma-surface;
+  padding: 4rem 0;
+}
+
+.public-flow-header {
+  margin-bottom: 2rem;
+
+  p {
+    color: $lerma-muted;
+    margin: .5rem auto 0;
+    max-width: 620px;
+  }
+}
+
+.public-instruction-card {
+  background: #fff;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+}
+
+.public-instruction-card {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  transition: box-shadow .18s ease;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: $lerma-shadow;
+  }
+}
+
+.public-check-list {
+  display: grid;
+  gap: .65rem;
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+
+  li {
+    color: $lerma-gray;
+    padding-left: 1.4rem;
+    position: relative;
+  }
+
+  li::before {
+    color: $lerma-green-official;
+    content: '✓';
+    font-weight: 700;
+    left: 0;
+    position: absolute;
+  }
+}
+
+.public-tutorial-link {
+  color: $lerma-orange;
+  text-decoration: underline;
+  text-underline-offset: .2rem;
+}
+
+// Eventos: cada publicación puede mostrarse como cartel o publicidad.
+.event-card-image,
+.event-detail-image {
+  background: $lerma-soft-gray;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.event-card-image,
+.event-card-placeholder {
+  aspect-ratio: 16 / 9;
+  border-top-left-radius: .5rem;
+  border-top-right-radius: .5rem;
+}
+
+.event-detail-image {
+  aspect-ratio: 16 / 9;
+  border-top-left-radius: .5rem;
+  border-top-right-radius: .5rem;
+}
+
+.event-card-placeholder {
+  align-items: center;
+  background: $lerma-soft-gray;
+  color: $lerma-orange;
+  display: flex;
+  font-size: 30px;
+  font-weight: 700;
+  justify-content: center;
+}
+
+// Listado público de vacantes: separa filtros de resultados.
+.public-vacancies-page {
+  background: $lerma-surface;
+  padding: 4rem 0;
+}
+
+.public-vacancies-header{
+  align-items: flex-end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  p {
+    color: $lerma-muted;
+    margin: .4rem 0 0;
+  }
+
+  @include media-breakpoint-down(md) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.public-vacancies-header span {
+  color: $lerma-gray;
+  font-weight: 700;
+}
+
+.vacancy-filter-panel {
+  background: #fff;
+  border-radius: $border-radius-lg;
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+
+  @include media-breakpoint-up(lg) {
+    align-items: end;
+    grid-template-columns: 1.2fr 1fr 1fr auto;
+  }
+}
+
+.vacancy-filter-actions {
+  display: flex;
+  gap: .65rem;
+}
+
+.vacancy-list-card {
+  background: #fff;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+  color: $lerma-ink;
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  transition: box-shadow .18s ease, transform .18s ease;
+
+  &:hover,
+  &:focus {
+    box-shadow: $lerma-shadow;
+    color: $lerma-ink;
+    transform: translateY(-3px);
+  }
+}
+
+.vacancy-list-card__header {
+  align-items: center;
+  display: flex;
+  gap: .75rem;
+  padding: 1.25rem 1.25rem 0;
+
+  small {
+    color: $lerma-blue;
+    display: block;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+}
+
+.vacancy-list-card__avatar {
+  align-items: center;
+  background: $lerma-soft-gray;
+  border: 1px solid $lerma-border;
+  border-radius: 50%;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 3rem;
+  justify-content: center;
+  overflow: hidden;
+  width: 3rem;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  span {
+    color: $lerma-orange;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+.vacancy-list-card__body {
+  padding: 1.25rem;
+
+  h3 {
+    margin-bottom: .5rem;
+  }
+
+  p {
+    color: $lerma-gray;
+    margin-top: .75rem;
+  }
+}
+
+.vacancy-list-card__salary {
+  color: $lerma-blue;
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.vacancy-list-card__meta {
+  border-top: 1px solid $lerma-border;
+  color: $lerma-gray;
+  display: grid;
+  gap: .45rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+
+  span {
+    align-items: center;
+    display: flex;
+    font-size: .8rem;
+    gap: .45rem;
+    line-height: 1.35;
+  }
+}
+
+// Detalle de vacante: layout con contenido principal, sidebar y similares.
+.vacancy-detail-page {
+  background: #fff;
+  padding: 4rem 0;
+}
+
+.vacancy-detail-header {
+  border-bottom: 1px solid $lerma-border;
+  margin: 1rem 0 2rem;
+  padding-bottom: 1rem;
+}
+
+.vacancy-stats {
+  background: $lerma-blue;
+  color: #fff;
+  display: grid;
+  margin-bottom: 2rem;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  div {
+    padding: 1.35rem;
+    text-align: center;
+
+    + div {
+      border-top: 1px solid rgba(#fff, .24);
+
+      @include media-breakpoint-up(md) {
+        border-left: 1px solid rgba(#fff, .24);
+        border-top: 0;
+      }
+    }
+  }
+
+  span,
+  strong {
+    display: block;
+  }
+
+  strong {
+    color: #fff;
+    margin-top: .45rem;
+  }
+}
+
+.vacancy-detail-content {
+  h2 {
+    margin-top: 1.6rem;
+  }
+}
+
+.vacancy-detail-list {
+  display: grid;
+  gap: .45rem;
+  list-style: none;
+  padding: 0;
+}
+
+.vacancy-company-card,
+.similar-vacancy-card {
+  background: #fff;
+  border: 1px solid $lerma-border;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+  transition: box-shadow .18s ease, transform .18s ease;
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    box-shadow: $lerma-shadow;
+  }
+}
+
+.vacancy-company-card {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.vacancy-company-logo {
+  align-items: center;
+  background: $lerma-soft-gray;
+  border-radius: $border-radius;
+  display: inline-flex;
+  height: 96px;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  width: 128px;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  span {
+    color: $lerma-orange;
+    font-size: 30px;
+    font-weight: 700;
+  }
+}
+
+.vacancy-company-rating {
+  color: $lerma-blue;
+  display: flex;
+  gap: .45rem;
+  justify-content: center;
+  margin: 1rem 0 1.25rem;
+}
+
+.vacancy-share {
+  align-items: center;
+  display: flex;
+  gap: .55rem;
+  justify-content: center;
+  margin-top: 2rem;
+
+  a {
+    color: $lerma-gray;
+  }
+}
+
+.similar-vacancies-section {
+  background: $lerma-surface;
+  padding: 4rem 0;
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.similar-vacancy-card {
+  color: $lerma-ink;
+  display: block;
+  height: 100%;
+  padding: 1.5rem;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $lerma-ink;
+    transform: translateY(-3px);
+  }
+
+  h3 {
+    margin-bottom: .8rem;
+  }
+
+  p {
+    color: $lerma-gray;
+  }
+
+  small {
+    color: $lerma-rose;
+  }
+}
+
+// Footer legal compacto usado en pantallas públicas y dashboards.
+.legacy-footer {
+  color: $lerma-ink;
+  margin-top: auto;
+}
+
+.legacy-footer__copy {
+  background: $lerma-soft-gray;
+  border-top: 1px solid $lerma-border;
+  padding: .85rem 0;
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem 1.5rem;
+    justify-content: center;
+    text-align: center;
+  }
+
+  a,
+  span {
+    color: $lerma-ink;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: .18rem;
+  }
+}
+
+// Home legacy: hero con imagen y buscador superpuesto.
+.legacy-home-hero {
+  min-height: 450px;
+  position: relative;
+}
+
+.legacy-home-hero__media {
+  background:
+    linear-gradient(90deg, rgba($lerma-ink, .52), rgba($lerma-blue, .12)),
+    url('/images/brand/employment-hero.jpg') center / cover no-repeat;
+  inset: 0;
+  position: absolute;
+}
+
+.legacy-home-hero__content {
+  align-items: center;
+  display: flex;
+  min-height: 450px;
+  position: relative;
+  z-index: 1;
+}
+
+.legacy-search-panel {
+  background: #fff;
+  border: 0;
+  border-radius: $border-radius-lg;
+  border-bottom-right-radius: 4rem;
+  max-width: 480px;
+  padding: 3rem;
+  position: absolute;
+  width: min(calc(100% - 1.5rem), 480px);
+
+  &::after {
+    background: $lerma-orange;
+    border-radius: 1rem;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+
+  h1 {
+    color: $lerma-ink;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    text-align: center;
+  }
+}
+
+.legacy-search-panel__summary {
+  color: $lerma-gray;
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.legacy-search-form {
+  display: grid;
+  gap: 1rem;
+
+  .form-label {
+    color: $lerma-gray;
+    font-weight: 300;
+  }
+
+  .input-group-text,
+  .form-control,
+  .form-select {
+    background: #fff;
+    border-color: rgba($lerma-gray, .25);
+    color: $lerma-gray;
+  }
+
+  .input-group-text {
+    color: $lerma-orange;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .legacy-search-form {
+    grid-template-columns: 1fr;
+  }
+
+  .legacy-search-form__action {
+    grid-column: 1 / -1;
+    text-align: right;
+  }
+}
+
+// Home legacy: sección de empresas destacadas.
+.legacy-companies-section,
+.legacy-opportunities-section {
+  padding: 5rem 0;
+}
+
+.legacy-companies-section {
+  background: #fff;
+}
+
+.legacy-section-heading {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  @include media-breakpoint-down(md) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.legacy-section-title {
+  color: $lerma-ink;
+  font-size: 22.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.legacy-company-card {
+  background: $lerma-soft-gray;
+  border: 0;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+  color: $lerma-ink;
+  display: block;
+  height: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color .18s ease, transform .18s ease;
+
+  &:hover {
+    box-shadow: $lerma-shadow;
+    transform: translateY(-4px);
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  p {
+    color: $lerma-muted;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 0;
+  }
+}
+
+.legacy-company-card__mark {
+  align-items: center;
+  border: 1px solid rgba($lerma-gray, .14);
+  border-radius: 50%;
+  color: $lerma-orange;
+  display: inline-flex;
+  font-size: 30px;
+  font-weight: 700;
+  height: 7rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  width: 7rem;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+// Home legacy: oportunidades recientes con sidebar.
+.legacy-opportunities-section {
+  background: $lerma-surface;
+}
+
+.legacy-sidebar-card {
+  border: 0;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+  overflow: hidden;
+  transition: box-shadow .18s ease;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: $lerma-shadow;
+  }
+
+  h3 {
+    background: $lerma-maroon;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  a,
+  p {
+    align-items: center;
+    border-top: 1px solid $lerma-border;
+    color: $lerma-gray;
+    display: flex;
+    gap: .5rem;
+    padding: .85rem 1rem;
+    text-decoration: none;
+  }
+
+  a:hover {
+    background: rgba($lerma-orange, .1);
+    color: $lerma-ink;
+  }
+}
+
+.legacy-vacancy-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.legacy-vacancy-card {
+  align-items: center;
+  background: #fff;
+  border-radius: $border-radius-lg;
+  box-shadow: none;
+  color: $lerma-ink;
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease;
+
+  &:hover {
+    box-shadow: $lerma-shadow;
+    transform: translateY(-3px);
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .legacy-vacancy-card {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.legacy-vacancy-card__image {
+  align-items: center;
+  background: $lerma-soft-gray;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  color: $lerma-orange;
+  display: inline-flex;
+  font-size: 1.75rem;
+  font-weight: 700;
+  height: 5.75rem;
+  justify-content: center;
+  overflow: hidden;
+  width: 5.75rem;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+.legacy-vacancy-card__heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  strong {
+    color: $lerma-blue;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+
+.legacy-vacancy-card__body {
+  p {
+    color: $lerma-muted;
+    font-size: 14px;
+    font-weight: 300;
+    margin: .35rem 0;
+  }
+
+  small {
+    color: $lerma-gray;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .legacy-home-hero,
+  .legacy-home-hero__content {
+    min-height: 680px;
+  }
+
+  .legacy-search-panel {
+    margin: 1rem 0;
+  }
+}

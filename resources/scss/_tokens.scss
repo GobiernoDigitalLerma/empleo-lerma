@@ -1,0 +1,38 @@
+// Tokens visuales inspirados en lerma.gob.mx y adaptados al portal de empleo.
+$lerma-blue: #0e9cd1;
+$lerma-orange: #f76a0c;
+$lerma-orange-strong: #fe5000;
+$lerma-green-official: #00b140;
+$lerma-maroon: #a6093d;
+$lerma-gray: #54585a;
+$lerma-ink: #231f20;
+$lerma-paper: #fefcfd;
+$lerma-soft-gray: #e9e9e9;
+$lerma-green: #0f6b4b;
+$lerma-deep-green: #094331;
+$lerma-gold: #b89242;
+$lerma-rose: #8d2444;
+$lerma-muted: #66736e;
+$lerma-surface: #f8f8f8;
+$lerma-border: #dfe4e6;
+$lerma-shadow: 0 .25rem 1rem rgba($lerma-ink, .08);
+
+$primary: $lerma-blue;
+$secondary: $lerma-gray;
+$success: $lerma-green-official;
+$warning: $lerma-orange-strong;
+$danger: #b42318;
+$body-color: $lerma-ink;
+$body-bg: #ffffff;
+$font-family-sans-serif: 'Bricolage Grotesque', 'Inter', 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$border-radius: .375rem;
+$border-radius-lg: .4rem;
+$border-radius-xl: .75rem;
+
+// Ancho institucional del contenido: limita los containers grandes a 1120px.
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1120px
+);

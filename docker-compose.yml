@@ -1,0 +1,79 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx-production
+    ports:
+      - "${APP_PORT:-8080}:80"
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-empleo_lerma}
+      MYSQL_USER: ${DB_USERNAME:-empleo_lerma}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    command: php artisan queue:work database --queue=default --tries=3 --timeout=90 --sleep=2
+    env_file:
+      - .env
+    depends_on:
+      app:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php artisan queue:monitor database:100 >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    command: php artisan schedule:work
+    env_file:
+      - .env
+    depends_on:
+      app:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
